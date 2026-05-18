@@ -1,0 +1,1191 @@
+================================================================================
+        THUNDER BULLS FOOTBALL TEAM — MERN STACK WEBSITE DESIGN GUIDE
+                     Full Design, Layout & SEO Blueprint
+                        EST. 2024 | Document v1.0
+================================================================================
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 1: TECH STACK OVERVIEW (MERN)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+M — MongoDB         : Database — stores players, matches, news, merchandise
+E — Express.js      : Backend framework — REST API routes
+R — React.js        : Frontend — all UI pages and components
+N — Node.js         : Server runtime — powers Express backend
+
+Additional Libraries to install:
+  Frontend:
+    - React Router DOM         (page routing)
+    - Axios                    (API calls)
+    - Framer Motion            (animations)
+    - React Helmet / Helmet Async (SEO meta tags)
+    - React Query / TanStack   (data fetching & caching)
+    - Swiper.js                (sliders/carousels)
+    - React Icons              (icon library)
+    - Tailwind CSS             (utility-first styling)
+    - GSAP (GreenSock)         (advanced scroll animations)
+    - React Toastify           (notifications)
+
+  Backend:
+    - Mongoose                 (MongoDB ODM)
+    - dotenv                   (environment variables)
+    - cors                     (cross-origin requests)
+    - bcryptjs                 (password hashing)
+    - jsonwebtoken             (JWT auth)
+    - multer                   (file/image uploads)
+    - cloudinary               (image hosting)
+    - nodemailer               (email contact form)
+    - helmet (npm)             (HTTP security headers)
+    - express-rate-limit       (prevent spam/abuse)
+    - morgan                   (logging)
+
+  SEO / Meta:
+    - sitemap (npm)            (auto-generate sitemap.xml)
+    - robots (npm)             (generate robots.txt)
+    - Next.js (OPTIONAL)       (if SSR/SSG is needed for better SEO)
+      Note: If maximum SEO is a priority, consider Next.js instead
+      of plain React, since React is client-side rendered by default.
+      Alternatively use React with a Node.js SSR setup.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 2: PROJECT FOLDER STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+thunder-bulls/
+├── client/                        ← React Frontend
+│   ├── public/
+│   │   ├── index.html
+│   │   ├── favicon.ico            ← Thunder Bulls bull logo favicon
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   ├── robots.txt             ← SEO: crawler instructions
+│   │   ├── sitemap.xml            ← SEO: page index for Google
+│   │   └── og-image.jpg          ← SEO: Open Graph social share image
+│   ├── src/
+│   │   ├── assets/
+│   │   │   ├── images/            ← logos, player photos, kit images
+│   │   │   ├── videos/            ← highlight reels, trailers
+│   │   │   └── fonts/             ← Oswald, Barlow Condensed
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── HeroSection.jsx
+│   │   │   ├── PlayerCard.jsx
+│   │   │   ├── MatchCard.jsx
+│   │   │   ├── NewsCard.jsx
+│   │   │   ├── KitShowcase.jsx
+│   │   │   ├── StatsCounter.jsx
+│   │   │   ├── ScrollReveal.jsx
+│   │   │   ├── LightningEffect.jsx
+│   │   │   └── SEOMeta.jsx        ← Helmet wrapper component
+│   │   ├── pages/
+│   │   │   ├── Home.jsx
+│   │   │   ├── Squad.jsx
+│   │   │   ├── Matches.jsx
+│   │   │   ├── News.jsx
+│   │   │   ├── NewsDetail.jsx
+│   │   │   ├── Shop.jsx
+│   │   │   ├── ProductDetail.jsx
+│   │   │   ├── About.jsx
+│   │   │   ├── Contact.jsx
+│   │   │   ├── Gallery.jsx
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx
+│   │   │   └── AdminDashboard.jsx
+│   │   ├── context/
+│   │   │   ├── AuthContext.jsx
+│   │   │   └── CartContext.jsx
+│   │   ├── hooks/
+│   │   │   ├── useScrollAnimation.js
+│   │   │   └── useFetch.js
+│   │   ├── utils/
+│   │   │   ├── api.js             ← Axios base config
+│   │   │   └── helpers.js
+│   │   ├── styles/
+│   │   │   ├── globals.css        ← CSS variables, base styles
+│   │   │   └── animations.css     ← lightning, storm animations
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│
+├── server/                        ← Node + Express Backend
+│   ├── config/
+│   │   ├── db.js                  ← MongoDB connection
+│   │   └── cloudinary.js
+│   ├── models/
+│   │   ├── Player.js
+│   │   ├── Match.js
+│   │   ├── News.js
+│   │   ├── Product.js
+│   │   ├── Order.js
+│   │   └── User.js
+│   ├── routes/
+│   │   ├── playerRoutes.js
+│   │   ├── matchRoutes.js
+│   │   ├── newsRoutes.js
+│   │   ├── shopRoutes.js
+│   │   ├── orderRoutes.js
+│   │   ├── authRoutes.js
+│   │   └── contactRoutes.js
+│   ├── controllers/
+│   │   ├── playerController.js
+│   │   ├── matchController.js
+│   │   ├── newsController.js
+│   │   ├── shopController.js
+│   │   └── authController.js
+│   ├── middleware/
+│   │   ├── authMiddleware.js
+│   │   ├── adminMiddleware.js
+│   │   └── uploadMiddleware.js
+│   ├── utils/
+│   │   └── sendEmail.js
+│   └── index.js                   ← Entry point
+│
+├── .env
+├── .gitignore
+├── package.json
+└── README.md
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 3: BRAND DESIGN SYSTEM (CSS VARIABLES)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Paste this in your globals.css:
+
+:root {
+  /* Thunder Bulls Official Colors */
+  --thunder-gold:       #FFC107;
+  --storm-black:        #0A0A0A;
+  --bull-crimson:       #B91C1C;
+  --lightning-white:    #FFFFFF;
+  --electric-blue:      #1E3A5F;
+  --ash-grey:           #404040;
+
+  /* Extended Palette */
+  --gold-glow:          rgba(255, 193, 7, 0.3);
+  --crimson-dark:       #7F1D1D;
+  --black-soft:         #111111;
+  --black-card:         #181818;
+  --black-overlay:      rgba(10, 10, 10, 0.85);
+
+  /* Typography */
+  --font-primary:       'Oswald', sans-serif;
+  --font-secondary:     'Barlow Condensed', sans-serif;
+
+  /* Spacing */
+  --section-padding:    80px 5%;
+  --card-radius:        12px;
+  --border-gold:        1px solid rgba(255, 193, 7, 0.4);
+
+  /* Shadows */
+  --glow-gold:          0 0 20px rgba(255, 193, 7, 0.5);
+  --glow-crimson:       0 0 20px rgba(185, 28, 28, 0.5);
+  --shadow-card:        0 8px 32px rgba(0, 0, 0, 0.6);
+
+  /* Transitions */
+  --transition-fast:    0.2s ease;
+  --transition-med:     0.4s ease;
+  --transition-slow:    0.8s ease;
+}
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 4: PAGE-BY-PAGE LAYOUT & DESIGN GUIDE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+────────────────────────────────────────────────────────────────────
+4A. NAVBAR — Fixed at Top
+────────────────────────────────────────────────────────────────────
+
+Layout:
+  [Thunder Bulls Logo + Text]  [NAV LINKS]  [SHOP NOW Button] [Hamburger]
+
+Design Rules:
+  - Background: Transparent on hero, becomes Storm Black (#0A0A0A) on scroll
+  - Logo: Thunder Bulls crest + "THUNDER BULLS" text in Oswald ExtraBold
+  - Nav Links: Oswald Medium, Lightning White, uppercase, letter-spacing 2px
+  - Hover State: Thunder Gold underline animation slides in from left
+  - Active page: Thunder Gold color on link
+  - Shop Now CTA: Thunder Gold background, Storm Black text, border-radius 4px
+  - Mobile: Hamburger icon → full-screen dark overlay menu with staggered
+    link animations (each link slides in with 0.1s delay between them)
+  - Sticky behavior: On scroll past 80px, add box-shadow: var(--glow-gold)
+    to navbar bottom border
+
+Nav Links (in order):
+  HOME | SQUAD | MATCHES | NEWS | SHOP | GALLERY | ABOUT | CONTACT
+
+
+────────────────────────────────────────────────────────────────────
+4B. HOME PAGE — Full Visual Impact
+────────────────────────────────────────────────────────────────────
+
+--- HERO SECTION ---
+  Height:        100vh (full screen)
+  Background:    Dark video loop of team warmup OR a dramatic still of
+                 the bull logo on a stormy sky
+  Overlay:       Gradient from Storm Black (left 50%) to transparent
+  Layout:        Left-aligned text, right side shows bull crest logo
+                 with pulsing gold glow animation
+
+  Text Block:
+    - Eyebrow text: "EST. 2024 — NEVER TAMED" (Barlow Condensed, gold, small)
+    - Main H1: "STRIKE FEAR." (Oswald ExtraBold, 96px, white)
+    - Sub H1:  "PLAY THUNDER." (Oswald ExtraBold, 96px, gold)
+    - Paragraph: Short team description, 18px, Barlow Condensed, grey
+    - CTA Buttons: [VIEW SQUAD] gold filled | [NEXT MATCH] outline white
+    - Lightning bolt animated SVG flashing behind text (CSS keyframes)
+
+  Animation:
+    - On load: Text slides in from left with opacity fade (Framer Motion)
+    - Logo: Glowing pulse animation on crest (gold box-shadow keyframe)
+    - Lightning flash: Random CSS animation, 3-5 second interval
+
+--- NEXT MATCH BANNER ---
+  Full-width dark band below hero
+  Content: vs [Opponent Logo] | Date | Time | Venue | [Buy Tickets] button
+  Background: Electric Blue (#1E3A5F) with subtle lightning pattern
+  Typography: Oswald, white + gold accents
+
+--- STATS COUNTERS ---
+  4 columns: [Wins This Season] [Goals Scored] [Clean Sheets] [Squad Size]
+  Numbers animate counting up when scrolled into view (JavaScript counter)
+  Style: Large Thunder Gold numbers, white labels, separator lines in crimson
+
+--- LATEST SQUAD HIGHLIGHT ---
+  Section title: "THE THUNDER BULLS" with animated underline in gold
+  Layout: 4 player cards in a horizontal row (scrollable on mobile)
+  Each Player Card:
+    - Player photo (grayscale → color on hover)
+    - Name in Oswald ExtraBold, gold
+    - Position in Barlow Condensed, white
+    - Jersey number, large, faded gold as background element
+    - Hover: Card lifts (translateY -8px), gold glow shadow appears
+  [VIEW FULL SQUAD] button at bottom
+
+--- UPCOMING MATCHES ---
+  Section title: "UPCOMING FIXTURES"
+  Layout: 3 match cards in a row
+  Each Match Card:
+    - Home team logo vs Away team logo
+    - Date, Time, Competition name
+    - Venue
+    - Subtle crimson border-left accent
+    - [MATCH INFO] link
+  Background: Dark cards on slightly lighter dark section background
+
+--- LATEST NEWS ---
+  Section title: "THUNDER BULLS NEWS"
+  Layout: 1 large featured article (left, 60%) + 2 small articles (right, 40%)
+  Featured Article Card:
+    - Large image with overlay gradient
+    - Category tag (e.g., "MATCH REPORT") in gold
+    - Title in Oswald Bold, 28px, white
+    - Date, author in Barlow Condensed, grey
+    - [READ MORE →] in gold
+  Small Article Cards: Image thumbnail + title + date, stacked vertically
+  [ALL NEWS] button in center below
+
+--- KIT SHOWCASE ---
+  Section title: "2024 OFFICIAL KITS"
+  3 kit cards: HOME | AWAY | THIRD
+  Layout: Cards side by side, each with:
+    - Kit image/mockup (front view)
+    - Kit name (Home / Away / Third)
+    - Brief description of colors
+    - [SHOP NOW] gold button
+  Hover: Smooth scale(1.04) with gold glow
+
+--- SPONSOR STRIP ---
+  Full-width row with sponsor logos (grayscale, color on hover)
+  Title: "OUR PARTNERS" in small caps, ash grey
+
+--- FOOTER ---
+  (See Section 4I)
+
+
+────────────────────────────────────────────────────────────────────
+4C. SQUAD PAGE
+────────────────────────────────────────────────────────────────────
+
+Page Title Hero:
+  - "THE SQUAD" in massive Oswald ExtraBold
+  - Storm Black background, lightning bolt graphic behind text
+
+Filter Bar:
+  - Filter by position: [ALL] [GOALKEEPER] [DEFENDERS] [MIDFIELDERS] [FORWARDS]
+  - Active filter button: Thunder Gold background
+  - Search input: "Search by name..." — dark input, gold focus border
+
+Player Grid:
+  - 4 columns on desktop, 2 on tablet, 1 on mobile
+  - Each Player Card:
+      Background: #181818 (black-card)
+      Top portion: Player image (action photo)
+      Over image: Large jersey number as background (faded, 150px, gold)
+      Bottom portion:
+        - Jersey Number: small, bold, gold
+        - Player Name: Oswald ExtraBold, white, 22px
+        - Position: Barlow Condensed, crimson, uppercase
+        - Nationality flag emoji or flag image
+        - Stats strip: Apps | Goals | Assists — small gold numbers
+      Hover effect:
+        - Image zooms slightly (scale 1.05 on inner img)
+        - Gold border appears
+        - Bottom strip slides up to show more detail
+
+Player Detail Modal (or separate page):
+  - Full-width player image (dark atmospheric)
+  - Name, number, position, nationality, age, height
+  - Season stats (matches, goals, assists, yellow cards, red cards)
+  - Short bio paragraph
+  - Social media links (if applicable)
+
+
+────────────────────────────────────────────────────────────────────
+4D. MATCHES PAGE
+────────────────────────────────────────────────────────────────────
+
+Tabs at top: [UPCOMING] [RESULTS] [ALL FIXTURES]
+
+Upcoming Matches:
+  - List view, each row:
+      Date | Home Team vs Away Team | Competition | Venue | [MATCH INFO]
+      Left border in gold for upcoming, green for win, red for loss
+  - OR Card view toggle option (two icons: list / grid)
+
+Results:
+  - Same layout + Score displayed prominently in center
+  - Winner's side highlighted in gold
+  - [MATCH REPORT] link
+
+Match Detail Page:
+  - Banner with team logos, final score in large numbers
+  - Match timeline: goals, cards, substitutions
+  - Player ratings (optional)
+  - Gallery thumbnails
+  - Stats table: Possession, Shots, Corners, etc.
+
+
+────────────────────────────────────────────────────────────────────
+4E. NEWS / BLOG PAGE
+────────────────────────────────────────────────────────────────────
+
+Layout: 3-column grid on desktop, 2 on tablet, 1 on mobile
+
+Each News Card:
+  - Featured image (16:9 ratio)
+  - Category tag (MATCH REPORT / TRANSFER NEWS / CLUB NEWS) — color coded
+    Match Report: Crimson tag
+    Transfer: Gold tag
+    Club News: Blue tag
+  - Title: Oswald Bold, 20px, white
+  - Excerpt: 2-3 lines, Barlow Condensed, grey
+  - Date + Author + Reading time
+  - [READ MORE →] hover underline animation
+
+Sidebar (on desktop):
+  - Search bar
+  - Latest 5 articles list
+  - Categories filter
+  - Social media links
+
+News Detail Page (Individual Article):
+  - Hero image full width
+  - Article title H1 (Oswald ExtraBold, 42px)
+  - Author, date, category
+  - Body text: Barlow Condensed or a clean body font like Nunito, 18px, 1.8 line-height
+  - Related articles at bottom
+  - SEO: Structured data (Article schema)
+  - Open Graph meta for social sharing
+
+
+────────────────────────────────────────────────────────────────────
+4F. SHOP PAGE
+────────────────────────────────────────────────────────────────────
+
+Banner: "OFFICIAL THUNDER BULLS STORE" with kit background image
+
+Filter Sidebar (desktop) / Dropdown (mobile):
+  - Category: [All] [Kits] [Training Wear] [Accessories] [Limited Edition]
+  - Size filter: XS / S / M / L / XL / 2XL / 3XL
+  - Sort: Price Low-High / High-Low / Newest
+
+Product Grid:
+  - 3 columns desktop, 2 tablet, 1 mobile
+  Each Product Card:
+    - Image with hover showing second view (front/back of kit)
+    - "LIMITED EDITION" or "NEW" badge if applicable (gold badge)
+    - Product Name: Oswald Bold, white
+    - Price: Thunder Gold, bold
+    - [ADD TO CART] button appears on hover (smooth slide up from bottom)
+
+Product Detail Page:
+  - Image gallery (main + 4 thumbnails, clickable)
+  - Product Name H1
+  - Price (gold)
+  - Size selector (buttons, highlight gold on select)
+  - Quantity selector
+  - [ADD TO CART] gold button — large, full width on mobile
+  - Kit description referencing spec document (color, fabric, features)
+  - Sizing chart (popup modal)
+  - Care instructions
+  - Related products section
+
+Cart & Checkout:
+  - Slide-in cart drawer from right side
+  - Shows items, quantities, subtotal
+  - [PROCEED TO CHECKOUT] gold CTA
+  - Checkout: Shipping address + payment (Stripe integration)
+
+
+────────────────────────────────────────────────────────────────────
+4G. GALLERY PAGE
+────────────────────────────────────────────────────────────────────
+
+Filter by: [All] [Match Photos] [Training] [Kit Launches] [Events]
+
+Masonry or even grid layout (masonry preferred for visual drama)
+
+Each photo: Hover shows dark overlay with photo title and date
+Click: Lightbox opens (fullscreen view with prev/next arrows)
+
+Video section below photos:
+  - Embedded YouTube highlights in grid layout
+
+
+────────────────────────────────────────────────────────────────────
+4H. CONTACT PAGE
+────────────────────────────────────────────────────────────────────
+
+Two-column layout:
+  Left column:
+    - "GET IN TOUCH" heading
+    - Address, Phone, Email with icon + Thunder Gold accent
+    - Social media links (large icons)
+    - Google Maps embed (dark map style to match brand)
+
+  Right column:
+    - Contact form:
+        Name | Email | Subject (dropdown) | Message
+        [SEND MESSAGE] gold button
+        Submit triggers: POST to /api/contact → Nodemailer sends email
+        Success: Green toast notification
+        Error: Red toast notification
+
+Form validation:
+  - Client-side: Required fields, email format
+  - Server-side: Sanitize inputs, rate limit to 5 requests/hour per IP
+
+
+────────────────────────────────────────────────────────────────────
+4I. FOOTER — Dark and Bold
+────────────────────────────────────────────────────────────────────
+
+Background: #060606 (deeper than Storm Black)
+Top border: 2px gradient line (gold → crimson → gold)
+
+Layout: 4 columns
+  Column 1: Thunder Bulls logo + tagline "STRIKE FEAR. PLAY THUNDER."
+             + social media icons (Instagram, Facebook, Twitter/X, YouTube)
+  Column 2: Quick Links (Home, Squad, Matches, News)
+  Column 3: Club Info (About, Gallery, Contact, Careers)
+  Column 4: Newsletter signup (email input + [SUBSCRIBE] gold button)
+
+Bottom strip:
+  © 2024 Thunder Bulls Football Club. All Rights Reserved.
+  Privacy Policy | Terms of Use | Cookie Policy
+
+Lightning bolt decorative SVG divider between main footer and bottom strip
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 5: ANIMATIONS & VISUAL EFFECTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+5A. Lightning Flash Effect (Hero Background)
+  @keyframes lightning-flash {
+    0%, 95%, 100% { opacity: 0; }
+    96%           { opacity: 0.15; }
+    97%           { opacity: 0; }
+    98%           { opacity: 0.25; }
+    99%           { opacity: 0; }
+  }
+  Apply to a white full-screen overlay div behind hero content.
+  animation: lightning-flash 4s infinite;
+
+5B. Gold Glow Pulse (Logo, CTA Buttons)
+  @keyframes gold-pulse {
+    0%, 100% { box-shadow: 0 0 10px rgba(255,193,7,0.3); }
+    50%       { box-shadow: 0 0 30px rgba(255,193,7,0.8); }
+  }
+  animation: gold-pulse 2.5s ease-in-out infinite;
+
+5C. Scroll Reveal (Framer Motion)
+  Use motion.div with:
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, ease: "easeOut" }}
+    viewport={{ once: true }}
+  Apply to: section headings, cards, player cards, news cards
+
+5D. Stats Counter (JavaScript)
+  On IntersectionObserver trigger, animate numbers from 0 to target value
+  over 2 seconds using easing function.
+
+5E. Navbar Background Transition
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) navbar.classList.add('scrolled');
+    else navbar.classList.remove('scrolled');
+  });
+  .navbar.scrolled { background: #0A0A0A; box-shadow: 0 2px 20px rgba(255,193,7,0.2); }
+
+5F. Page Loading Screen (Optional, Recommended)
+  Full-screen black loading screen with Thunder Bulls logo
+  animating in (scale from 0.5 to 1, opacity 0 to 1)
+  Then fades out after 1.5 seconds.
+  Implementation: Conditional render based on loading state in App.jsx
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 6: MONGODB DATA MODELS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Player Model:
+  {
+    name: String,
+    jerseyNumber: Number,
+    position: String,       // Goalkeeper, Defender, Midfielder, Forward
+    nationality: String,
+    age: Number,
+    height: String,
+    photo: String,          // Cloudinary URL
+    stats: {
+      appearances: Number,
+      goals: Number,
+      assists: Number,
+      yellowCards: Number,
+      redCards: Number
+    },
+    bio: String,
+    isCaptain: Boolean,
+    socialLinks: { instagram: String, twitter: String }
+  }
+
+Match Model:
+  {
+    homeTeam: String,
+    awayTeam: String,
+    homeTeamLogo: String,
+    awayTeamLogo: String,
+    date: Date,
+    venue: String,
+    competition: String,
+    status: String,         // upcoming | completed | live
+    score: { home: Number, away: Number },
+    report: String,         // Rich text match report
+    gallery: [String],      // Array of Cloudinary image URLs
+    goalscorers: [{ player: String, minute: Number }]
+  }
+
+News Model:
+  {
+    title: String,
+    slug: String,           // SEO-friendly URL: "thunder-bulls-win-3-0"
+    excerpt: String,
+    content: String,        // Rich text (HTML or Markdown)
+    coverImage: String,
+    category: String,       // match-report | transfer | club-news
+    author: String,
+    publishedAt: Date,
+    tags: [String],
+    metaTitle: String,      // SEO field
+    metaDescription: String // SEO field
+  }
+
+Product Model:
+  {
+    name: String,
+    slug: String,
+    description: String,
+    price: Number,
+    images: [String],
+    category: String,       // kit | training | accessories | limited
+    sizes: [String],
+    stock: { XS: Number, S: Number, M: Number, ... },
+    edition: String,        // player-match | fan-replica | limited | training
+    isFeatured: Boolean,
+    badge: String           // "NEW" | "LIMITED" | ""
+  }
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 7: EXPRESS API ROUTES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+All routes prefixed with /api
+
+AUTH ROUTES:
+  POST   /api/auth/register        — Register user
+  POST   /api/auth/login           — Login, returns JWT token
+  GET    /api/auth/me              — Get current user (protected)
+
+PLAYER ROUTES:
+  GET    /api/players              — Get all players
+  GET    /api/players/:id          — Get single player
+  POST   /api/players              — Add player (admin only)
+  PUT    /api/players/:id          — Update player (admin only)
+  DELETE /api/players/:id          — Delete player (admin only)
+
+MATCH ROUTES:
+  GET    /api/matches              — Get all matches
+  GET    /api/matches/upcoming     — Get upcoming matches
+  GET    /api/matches/results      — Get completed matches
+  GET    /api/matches/:id          — Get single match
+  POST   /api/matches              — Add match (admin)
+  PUT    /api/matches/:id          — Update match (admin)
+
+NEWS ROUTES:
+  GET    /api/news                 — Get all articles (paginated)
+  GET    /api/news/:slug           — Get article by slug
+  GET    /api/news/category/:cat   — Filter by category
+  POST   /api/news                 — Create article (admin)
+  PUT    /api/news/:id             — Update article (admin)
+  DELETE /api/news/:id             — Delete article (admin)
+
+SHOP ROUTES:
+  GET    /api/products             — Get all products
+  GET    /api/products/:slug       — Get single product
+  GET    /api/products/featured    — Get featured products
+  POST   /api/products             — Add product (admin)
+  PUT    /api/products/:id         — Update product (admin)
+
+ORDER ROUTES:
+  POST   /api/orders               — Create order (authenticated user)
+  GET    /api/orders/my            — Get current user's orders
+  GET    /api/orders               — All orders (admin)
+  PUT    /api/orders/:id/status    — Update order status (admin)
+
+CONTACT:
+  POST   /api/contact              — Send message (triggers email)
+
+IMAGE UPLOAD:
+  POST   /api/upload               — Upload image to Cloudinary (admin)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 8: RESPONSIVE DESIGN BREAKPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Breakpoint     Width       Layout Change
+-----------    ---------   -------------------------------------------------------
+Mobile         < 640px     Single column, hamburger menu, stacked sections
+Tablet         640–1024px  2-column grids, condensed nav, some stacking
+Desktop        1024–1280px 3-4 column grids, full navigation, sidebar visible
+Wide           > 1280px    Max-width container 1440px, centered, generous spacing
+
+Tailwind config breakpoints (tailwind.config.js):
+  screens: {
+    'sm': '640px',
+    'md': '768px',
+    'lg': '1024px',
+    'xl': '1280px',
+    '2xl': '1536px',
+  }
+
+Mobile-first rule: Always design/code for mobile first, then add
+desktop styles with lg: md: prefixes in Tailwind.
+
+Specific mobile considerations:
+  - Hero H1: 96px on desktop → 48px on mobile (text-5xl md:text-7xl xl:text-9xl)
+  - Player grid: grid-cols-1 sm:grid-cols-2 lg:grid-cols-4
+  - Navbar: Fixed, full-width overlay menu on mobile
+  - Stats counters: 2x2 grid on mobile instead of 4 in a row
+  - Kit showcase: Horizontal scroll (overflow-x: auto) on mobile
+  - Footer: Single column stack on mobile
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 9: SEO — COMPLETE GUIDE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+────────────────────────────────────────────────────────────────────
+9A. React Helmet — Per-Page Meta Tags
+────────────────────────────────────────────────────────────────────
+
+Install: npm install react-helmet-async
+
+Wrap App.jsx in <HelmetProvider>
+
+Create SEOMeta.jsx component:
+
+  import { Helmet } from 'react-helmet-async';
+
+  const SEOMeta = ({ title, description, image, url, type }) => (
+    <Helmet>
+      {/* Basic */}
+      <title>{title} | Thunder Bulls FC</title>
+      <meta name="description" content={description} />
+      <meta name="keywords" content="Thunder Bulls, football team, soccer, squad, kits, EST 2024" />
+      <link rel="canonical" href={url} />
+
+      {/* Open Graph (Facebook, LinkedIn) */}
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:image" content={image || '/og-image.jpg'} />
+      <meta property="og:url" content={url} />
+      <meta property="og:type" content={type || 'website'} />
+      <meta property="og:site_name" content="Thunder Bulls FC" />
+
+      {/* Twitter Card */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={image || '/og-image.jpg'} />
+      <meta name="twitter:site" content="@ThunderBullsFC" />
+
+      {/* Theme color (mobile browser bar color) */}
+      <meta name="theme-color" content="#FFC107" />
+    </Helmet>
+  );
+
+Use on each page:
+  // Home.jsx
+  <SEOMeta
+    title="Home"
+    description="Thunder Bulls FC — Official website. Fixtures, squad, news and shop."
+    url="https://thunderbulls.com/"
+  />
+
+  // News Article
+  <SEOMeta
+    title={article.metaTitle || article.title}
+    description={article.metaDescription || article.excerpt}
+    image={article.coverImage}
+    url={`https://thunderbulls.com/news/${article.slug}`}
+    type="article"
+  />
+
+
+────────────────────────────────────────────────────────────────────
+9B. Structured Data (JSON-LD Schema) — Add in index.html or Helmet
+────────────────────────────────────────────────────────────────────
+
+Organization Schema (site-wide, in index.html <head>):
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SportsTeam",
+    "name": "Thunder Bulls FC",
+    "url": "https://thunderbulls.com",
+    "logo": "https://thunderbulls.com/logo512.png",
+    "sameAs": [
+      "https://instagram.com/thunderbullsfc",
+      "https://twitter.com/thunderbullsfc",
+      "https://facebook.com/thunderbullsfc"
+    ],
+    "foundingDate": "2024",
+    "sport": "Football"
+  }
+  </script>
+
+Article Schema (on each News Detail page via Helmet):
+  {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": "Article Title Here",
+    "image": "https://thunderbulls.com/images/article-cover.jpg",
+    "datePublished": "2024-05-01",
+    "dateModified": "2024-05-02",
+    "author": { "@type": "Person", "name": "Thunder Bulls Staff" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Thunder Bulls FC",
+      "logo": { "@type": "ImageObject", "url": "https://thunderbulls.com/logo.png" }
+    },
+    "description": "Article excerpt/meta description here"
+  }
+
+BreadcrumbList Schema (for inner pages):
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thunderbulls.com" },
+      { "@type": "ListItem", "position": 2, "name": "News", "item": "https://thunderbulls.com/news" },
+      { "@type": "ListItem", "position": 3, "name": "Article Title" }
+    ]
+  }
+
+Product Schema (for Shop product pages):
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Thunder Bulls Home Kit 2024",
+    "image": "https://thunderbulls.com/shop/home-kit.jpg",
+    "description": "Official Thunder Bulls 2024 Home Kit...",
+    "brand": { "@type": "Brand", "name": "Thunder Bulls FC" },
+    "offers": {
+      "@type": "Offer",
+      "price": "49.99",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    }
+  }
+
+
+────────────────────────────────────────────────────────────────────
+9C. robots.txt (in /client/public/robots.txt)
+────────────────────────────────────────────────────────────────────
+
+  User-agent: *
+  Allow: /
+  Disallow: /admin/
+  Disallow: /api/
+  Disallow: /checkout/
+  Disallow: /account/
+  Sitemap: https://thunderbulls.com/sitemap.xml
+
+
+────────────────────────────────────────────────────────────────────
+9D. sitemap.xml — Auto-generate with Node.js
+────────────────────────────────────────────────────────────────────
+
+Install: npm install sitemap
+
+Create /server/utils/generateSitemap.js
+
+  const { SitemapStream, streamToPromise } = require('sitemap');
+  const News = require('../models/News');
+  const Product = require('../models/Product');
+
+  const generateSitemap = async () => {
+    const smStream = new SitemapStream({ hostname: 'https://thunderbulls.com' });
+
+    // Static pages
+    smStream.write({ url: '/', changefreq: 'daily', priority: 1.0 });
+    smStream.write({ url: '/squad', changefreq: 'weekly', priority: 0.8 });
+    smStream.write({ url: '/matches', changefreq: 'daily', priority: 0.9 });
+    smStream.write({ url: '/news', changefreq: 'daily', priority: 0.9 });
+    smStream.write({ url: '/shop', changefreq: 'weekly', priority: 0.8 });
+    smStream.write({ url: '/about', changefreq: 'monthly', priority: 0.5 });
+    smStream.write({ url: '/contact', changefreq: 'monthly', priority: 0.4 });
+    smStream.write({ url: '/gallery', changefreq: 'weekly', priority: 0.6 });
+
+    // Dynamic news articles
+    const articles = await News.find({}, 'slug updatedAt');
+    articles.forEach(a => {
+      smStream.write({ url: `/news/${a.slug}`, lastmod: a.updatedAt, priority: 0.7 });
+    });
+
+    // Dynamic product pages
+    const products = await Product.find({}, 'slug updatedAt');
+    products.forEach(p => {
+      smStream.write({ url: `/shop/${p.slug}`, lastmod: p.updatedAt, priority: 0.7 });
+    });
+
+    smStream.end();
+    return streamToPromise(smStream).then(data => data.toString());
+  };
+
+  module.exports = generateSitemap;
+
+Add route in Express:
+  app.get('/sitemap.xml', async (req, res) => {
+    const sitemap = await generateSitemap();
+    res.header('Content-Type', 'application/xml');
+    res.send(sitemap);
+  });
+
+
+────────────────────────────────────────────────────────────────────
+9E. URL Structure (SEO-Friendly Slugs)
+────────────────────────────────────────────────────────────────────
+
+BAD:   /news?id=64a3f...
+GOOD:  /news/thunder-bulls-beat-rivals-3-0
+
+BAD:   /shop/product?sku=12345
+GOOD:  /shop/thunder-bulls-home-kit-2024
+
+BAD:   /player?id=7
+GOOD:  /squad/ali-hassan-7
+
+Rules for slugs:
+  - Always lowercase
+  - Hyphens between words (no underscores)
+  - No special characters
+  - Include keywords naturally
+  - Keep under 70 characters
+
+Generate slugs in backend:
+  const slugify = (text) =>
+    text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+
+────────────────────────────────────────────────────────────────────
+9F. Page Speed & Core Web Vitals (Google Ranking Factors)
+────────────────────────────────────────────────────────────────────
+
+Images:
+  - Use WebP format (50% smaller than JPEG)
+  - Always set width and height attributes on <img> to prevent layout shift
+  - Use loading="lazy" on all images below the fold
+  - Use srcset for responsive images
+  - Serve images via Cloudinary with auto-format and auto-quality
+
+  Example Cloudinary URL with optimization:
+  https://res.cloudinary.com/your-cloud/image/upload/f_auto,q_auto,w_800/player-photo.jpg
+
+Code Splitting:
+  - React.lazy() + Suspense for route-based code splitting
+  - This reduces initial JS bundle size significantly
+
+  const Squad = React.lazy(() => import('./pages/Squad'));
+  <Suspense fallback={<LoadingScreen />}>
+    <Squad />
+  </Suspense>
+
+Font Loading:
+  - Use Google Fonts with display=swap to prevent render blocking
+  - Preconnect to fonts.googleapis.com and fonts.gstatic.com in <head>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+
+Compression:
+  - Enable Gzip/Brotli compression in Express:
+    npm install compression
+    app.use(require('compression')());
+
+Caching:
+  - Set Cache-Control headers for static assets
+  - API responses: use Redis (optional) or in-memory caching for
+    frequently accessed data like squad, upcoming matches
+
+Minification:
+  - Vite (or Create React App) handles JS/CSS minification in production
+  - Run: npm run build — creates optimized /dist folder
+
+
+────────────────────────────────────────────────────────────────────
+9G. Target Keywords for Thunder Bulls Website
+────────────────────────────────────────────────────────────────────
+
+Primary Keywords:
+  - "Thunder Bulls FC"
+  - "Thunder Bulls Football Team"
+  - "Thunder Bulls Official Website"
+
+Secondary Keywords:
+  - "Thunder Bulls squad 2024"
+  - "Thunder Bulls fixtures"
+  - "Thunder Bulls match results"
+  - "Thunder Bulls official kit"
+  - "Thunder Bulls jersey buy"
+
+Long-tail Keywords (for blog/news pages):
+  - "Thunder Bulls vs [Opponent] match report"
+  - "Thunder Bulls home kit 2024 features"
+  - "Thunder Bulls players list 2024"
+  - "Thunder Bulls training kit buy online"
+
+Use keywords in:
+  - Page <title> tags
+  - H1 headings (one H1 per page only)
+  - Meta descriptions
+  - First 100 words of body content
+  - Image alt text (e.g., alt="Thunder Bulls home kit 2024 Storm Black")
+  - URL slugs
+
+IMPORTANT: Never keyword-stuff. Use naturally in context.
+Google penalizes keyword stuffing.
+
+
+────────────────────────────────────────────────────────────────────
+9H. Open Graph Image Specification
+────────────────────────────────────────────────────────────────────
+
+Create one default OG image: /public/og-image.jpg
+Dimensions: 1200 × 630 pixels
+Content: Thunder Bulls logo centered on dark background,
+         "THUNDER BULLS FC" text, tagline "STRIKE FEAR. PLAY THUNDER."
+         Use official colors (black/gold)
+File size: Under 300KB (use TinyPNG or Squoosh to compress)
+
+Each news article and product should have its own OG image
+(the cover image / product image) passed via React Helmet.
+
+
+────────────────────────────────────────────────────────────────────
+9I. Google Search Console & Analytics Setup
+────────────────────────────────────────────────────────────────────
+
+1. Google Search Console:
+   - Go to search.google.com/search-console
+   - Add your domain
+   - Verify ownership: add <meta name="google-site-verification" content="...">
+     to index.html via Helmet
+   - Submit sitemap URL: https://thunderbulls.com/sitemap.xml
+
+2. Google Analytics 4:
+   - Create GA4 property at analytics.google.com
+   - Install: npm install react-ga4
+   - Initialize in App.jsx:
+     import ReactGA from 'react-ga4';
+     ReactGA.initialize('G-XXXXXXXXXX');
+   - Track page views:
+     useEffect(() => { ReactGA.send("pageview"); }, [location]);
+
+3. Facebook Pixel (for shop retargeting ads):
+   - Get pixel ID from Facebook Business Manager
+   - Add Facebook Pixel base code to index.html
+   - Track AddToCart and Purchase events
+
+
+────────────────────────────────────────────────────────────────────
+9J. Social Media & Local SEO
+────────────────────────────────────────────────────────────────────
+
+Social Profiles (link FROM website TO these, boosts authority):
+  - Instagram: @ThunderBullsFC
+  - Twitter/X: @ThunderBullsFC
+  - Facebook: /ThunderBullsFC
+  - YouTube: /ThunderBullsFC
+
+Cross-link back to the website from all social bios.
+
+Ensure NAP consistency (Name, Address, Phone) across:
+  - Website
+  - Google Business Profile
+  - Facebook Page
+  - Any sports directories or local listings
+
+Add to Google Maps / Google Business Profile if club has a physical address.
+
+
+────────────────────────────────────────────────────────────────────
+9K. HTTPS & Security (Also affects SEO ranking)
+────────────────────────────────────────────────────────────────────
+
+- Always serve on HTTPS — Google de-ranks HTTP sites
+- Use Let's Encrypt free SSL certificate (via hosting provider)
+- Add security headers via helmet npm package in Express:
+  const helmet = require('helmet');
+  app.use(helmet());
+- Set HSTS header (forces HTTPS in browsers)
+- Redirect all HTTP → HTTPS at server level
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 10: DEPLOYMENT GUIDE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Frontend (React):
+  Option 1: Vercel — Free, auto-deploys from GitHub, fast CDN
+  Option 2: Netlify — Similar to Vercel, easy setup
+  Option 3: Serve built files via Express (combined deployment)
+
+Backend (Node/Express):
+  Option 1: Railway.app — Easy Node.js deployment, free tier
+  Option 2: Render.com — Free tier available
+  Option 3: DigitalOcean / Linode VPS — Full control
+
+Database (MongoDB):
+  MongoDB Atlas — Free M0 cluster for small/medium traffic
+  Go to mongodb.com/cloud/atlas, create free cluster
+  Get connection string for .env: MONGO_URI=mongodb+srv://...
+
+Image Storage:
+  Cloudinary — Free tier: 25GB storage, 25GB bandwidth/month
+
+Domain:
+  Register thunderbulls.com or thunderbullsfc.com
+  Point to Vercel/Netlify or server IP
+  Set up HTTPS via registrar or Let's Encrypt
+
+Environment Variables (.env):
+  NODE_ENV=production
+  PORT=5000
+  MONGO_URI=mongodb+srv://...
+  JWT_SECRET=your_strong_random_secret_here
+  CLOUDINARY_CLOUD_NAME=...
+  CLOUDINARY_API_KEY=...
+  CLOUDINARY_API_SECRET=...
+  EMAIL_USER=thunderbulls@gmail.com
+  EMAIL_PASS=app_password_here
+  CLIENT_URL=https://thunderbulls.com
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 11: PERFORMANCE CHECKLIST BEFORE LAUNCH
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  [ ] All images are WebP and under 200KB each
+  [ ] Fonts loaded via Google Fonts with display=swap
+  [ ] Lazy loading on all below-fold images
+  [ ] React.lazy() code splitting on all page-level routes
+  [ ] Gzip/Brotli compression enabled on Express
+  [ ] HTTPS enforced
+  [ ] robots.txt present and correct
+  [ ] sitemap.xml accessible at /sitemap.xml
+  [ ] sitemap submitted to Google Search Console
+  [ ] Every page has unique <title> and meta description
+  [ ] Every page has og:image and og:title
+  [ ] JSON-LD structured data on homepage, news pages, product pages
+  [ ] Google Analytics 4 installed and tracking
+  [ ] All image alt attributes filled in meaningfully
+  [ ] No broken links (test with Screaming Frog or Ahrefs)
+  [ ] Mobile responsive (test in Chrome DevTools + real device)
+  [ ] Lighthouse score: aim for 90+ on all four metrics
+      (Performance, Accessibility, Best Practices, SEO)
+  [ ] Contact form tested (submission + email received)
+  [ ] 404 page exists (custom branded 404 with navigation)
+  [ ] Admin dashboard protected with JWT auth
+  [ ] Rate limiting on auth + contact endpoints
+  [ ] MongoDB Atlas IP whitelist configured for production server
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 12: QUICK-START COMMANDS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# 1. Create React frontend with Vite
+npm create vite@latest client -- --template react
+cd client && npm install
+
+# 2. Install frontend dependencies
+npm install react-router-dom axios framer-motion react-helmet-async
+npm install react-query swiper react-icons react-toastify
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+
+# 3. Create backend
+mkdir server && cd server
+npm init -y
+npm install express mongoose dotenv cors bcryptjs jsonwebtoken
+npm install multer cloudinary nodemailer helmet express-rate-limit
+npm install morgan compression sitemap
+npm install -D nodemon
+
+# 4. Start development
+# Terminal 1 (backend):
+cd server && nodemon index.js
+
+# Terminal 2 (frontend):
+cd client && npm run dev
+
+# 5. Build for production
+cd client && npm run build
+# Serve client/dist via Express or Vercel/Netlify
+
+
+================================================================================
+         END OF THUNDER BULLS MERN STACK WEBSITE DESIGN & SEO GUIDE
+          Document Version 1.0 | Prepared May 2026
+          Thunder Bulls Football Club — EST. 2024
+          "STRIKE FEAR. PLAY THUNDER."
+================================================================================

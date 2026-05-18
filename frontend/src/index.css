@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Thunder Bulls Official Colors */
+    --thunder-gold:       #FFC107;
+    --storm-black:        #0A0A0A;
+    --bull-crimson:       #B91C1C;
+    --lightning-white:    #FFFFFF;
+    --electric-blue:      #1E3A5F;
+    --ash-grey:           #404040;
+
+    /* Extended Palette */
+    --gold-glow:          rgba(255, 193, 7, 0.3);
+    --crimson-dark:       #7F1D1D;
+    --black-soft:         #111111;
+    --black-card:         #181818;
+    --black-overlay:      rgba(10, 10, 10, 0.85);
+
+    /* Typography */
+    --font-primary:       'Oswald', sans-serif;
+    --font-secondary:     'Barlow Condensed', sans-serif;
+
+    /* Spacing */
+    --section-padding:    80px 5%;
+    --card-radius:        12px;
+    --border-gold:        1px solid rgba(255, 193, 7, 0.4);
+
+    /* Shadows */
+    --glow-gold:          0 0 20px rgba(255, 193, 7, 0.5);
+    --glow-crimson:       0 0 20px rgba(185, 28, 28, 0.5);
+    --shadow-card:        0 8px 32px rgba(0, 0, 0, 0.6);
+
+    /* Transitions */
+    --transition-fast:    0.2s ease;
+    --transition-med:     0.4s ease;
+    --transition-slow:    0.8s ease;
+  }
+
+  body {
+    @apply bg-storm-black text-lightning-white font-barlow antialiased overflow-x-hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-oswald font-bold tracking-wide;
+  }
+}
+
+@layer utilities {
+  .text-glow-gold {
+    text-shadow: 0 0 10px rgba(255, 193, 7, 0.6);
+  }
+  
+  .box-glow-gold {
+    box-shadow: var(--glow-gold);
+  }
+
+  .section-padding {
+    padding: var(--section-padding);
+  }
+}
+
+/* Animations */
+@keyframes lightning-flash {
+  0%, 95%, 100% { opacity: 0; }
+  96%           { opacity: 0.15; }
+  97%           { opacity: 0; }
+  98%           { opacity: 0.25; }
+  99%           { opacity: 0; }
+}
+
+.animate-lightning {
+  animation: lightning-flash 4s infinite;
+}
+
+@keyframes gold-pulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(255,193,7,0.3); }
+  50%       { box-shadow: 0 0 30px rgba(255,193,7,0.8); }
+}
+
+.animate-gold-pulse {
+  animation: gold-pulse 2.5s ease-in-out infinite;
+}
+
